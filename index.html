@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWB Scanner with Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>DTH_AWB_READER</h1>
+    </header>
+    <main>
+        <div class="canvas-grid">
+            <div class="canvas-container">
+                <h2>DTH_CAM_LIVE</h2>
+                <video id="video" autoplay playsinline></video>
+                <canvas id="mainCanvas" style="display: none;"></canvas>
+            </div>
+            <button id="scanButton">DTH_SCAN</button>
+            <div id="code" class="result-display">DTH_ORDER_CODE: WAITING_FOR_SCAN</div>
+            <div id="log"></div>
+            <div class="canvas-container">
+                <h2>DTH_CAM_PROCESSED</h2>
+                <canvas id="processedCanvas"></canvas>
+            </div>
+            <div class="canvas-container">
+                <h2>DTH_CAM_CONTOURS</h2>
+                <canvas id="contoursCanvas"></canvas>
+            </div>
+        </div>
+    </main>
+    <script src="https://docs.opencv.org/4.5.2/opencv.js"></script>
+    <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
+    <script src="scanner.js"></script>
+</body>
+</html>
