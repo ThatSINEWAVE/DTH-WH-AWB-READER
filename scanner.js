@@ -64,12 +64,15 @@ async function processFrame() {
         let gray = new cv.Mat();
         cv.cvtColor(src, gray, cv.COLOR_RGBA2GRAY);
 
-        cv.GaussianBlur(gray, gray, new cv.Size(5, 5), 0);
-        cv.adaptiveThreshold(gray, gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11, 2);
+        // Enhance contrast
+        let clahe = new cv.CLAHE(2.0, new cv.Size(8, 8));
+        clahe.apply(gray, gray);
 
-        let kernel = cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(3, 3));
-        cv.morphologyEx(gray, gray, cv.MORPH_CLOSE, kernel);
-        cv.morphologyEx(gray, gray, cv.MORPH_OPEN, kernel);
+        // Apply Gaussian blur to reduce noise
+        cv.GaussianBlur(gray, gray, new cv.Size(3, 3), 0);
+
+        // Apply adaptive thresholding
+        cv.adaptiveThreshold(gray, gray, 255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY, 11, 2);
 
         displayMat(gray, processedCanvas);
 
