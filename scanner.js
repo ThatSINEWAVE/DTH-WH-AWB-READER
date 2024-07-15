@@ -20,14 +20,29 @@ function log(message) {
 }
 
 // Access the webcam
-navigator.mediaDevices.getUserMedia({ video: { width: 640, height: 480 } }).then(stream => {
-    video.srcObject = stream;
-    video.play();
-    log('Webcam accessed successfully.');
-}).catch(err => {
-    log(`Error accessing webcam: ${err}`);
-    console.error("Error accessing webcam: ", err);
-});
+function getCameraStream() {
+    const constraints = {
+        video: {
+            width: { ideal: 640 },
+            height: { ideal: 480 },
+            facingMode: { ideal: 'environment' }
+        }
+    };
+
+    navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+            log('Camera accessed successfully.');
+        })
+        .catch(err => {
+            log(`Error accessing camera: ${err}`);
+            console.error("Error accessing camera: ", err);
+        });
+}
+
+// Call this function to initiate camera access
+getCameraStream();
 
 const orderCodePattern = /SGRO\d{13}_\d{6}/;
 
