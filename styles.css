@@ -134,34 +134,62 @@ canvas, video {
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+#cameraSelect {
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+#scanButton, #copyButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
 @media (max-width: 768px) {
-    .canvas-grid {
-        grid-template-columns: 1fr;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    #scanButton, #copyButton {
-        font-size: 1.1rem;
-        padding: 0.6rem 1.5rem;
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .result-display {
-        font-size: 1.4rem;
+    header {
         padding: 1rem;
     }
 
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    main {
+        padding: 1rem 0.5rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    #cameraSelect, #scanButton, #copyButton {
+        width: 100%;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    .canvas-grid {
+        gap: 1rem;
+    }
+
+    .result-display {
+        font-size: 1.2rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+
     #log {
-        height: 200px;
+        height: 150px;
     }
 }
 
-@media (min-width: 1024px) {
-    .canvas-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.hidden {
+    display: none;
 }
