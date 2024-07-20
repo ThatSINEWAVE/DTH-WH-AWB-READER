@@ -1,11 +1,12 @@
 const video = document.getElementById('video');
 const mainCanvas = document.getElementById('mainCanvas');
-const mainContext = mainCanvas.getContext('2d');
+const mainContext = mainCanvas.getContext('2d', { willReadFrequently: true });
 const processedCanvas = document.getElementById('processedCanvas');
 const processedContext = processedCanvas.getContext('2d');
 const codeDisplay = document.getElementById('code');
 const logDisplay = document.getElementById('log');
 const scanButton = document.getElementById('scanButton');
+const copyButton = document.getElementById('copyButton');
 
 let isScanning = false;
 let shouldStopScanning = false;
@@ -79,11 +80,10 @@ async function processFrame() {
 
         displayMat(gray, processedCanvas);
 
-        // Instead of finding contours, we'll use the entire processed image for OCR
         try {
             let result = await Tesseract.recognize(processedCanvas, 'eng', {
                 tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-                tessedit_pageseg_mode: '6'  // Assume a single uniform block of text
+                tessedit_pageseg_mode: '6'
             });
 
             let text = result.data.text.replace(/\s+/g, '');
@@ -165,6 +165,26 @@ function updateMainCanvas() {
 }
 
 video.addEventListener('play', updateMainCanvas);
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        copyButton.textContent = 'COPIAT';
+        copyButton.classList.add('success');
+        setTimeout(() => {
+            copyButton.textContent = 'COPIEAZA';
+            copyButton.classList.remove('success');
+        }, 1000);
+    }).catch(err => {
+        log(`Failed to copy text: ${err}`);
+    });
+}
+
+copyButton.addEventListener('click', () => {
+    const codeText = codeDisplay.textContent.replace('DTH_ORDER_CODE: ', '');
+    if (codeText && codeText !== 'WAITING_FOR_SCAN' && codeText !== 'SCAN_IN_PROGRESS' && codeText !== 'NOT_FOUND') {
+        copyToClipboard(codeText);
+    }
+});
 
 // Initial reset to ensure the system is ready for the first scan
 resetScanState();
